@@ -2,6 +2,23 @@ import ImagePicker from '@/components/meals/image-picker';
 import classes from './page.module.css';
 
 export default function ShareMealPage() {
+  // server action require async keyword and directive
+  // feature exist on react and this feature require framework like react to unlock
+  async function shareMeal(formData) {
+    // in case of function we have explicility tell that it is executed on the server
+    // directive to tell execute this function on server
+    'use server'
+    const meal = {
+      title: formData.get('title'),
+      summary: formData.get('summary'),
+      instructions: formData.get('instructions'),
+      image: formData.get('image'),
+      creator: formData.get('name'),
+      creator_email: formData.get('email'),
+    }
+
+    console.log(meal);
+  }
   return (
     <>
       <header className={classes.header}>
@@ -11,7 +28,7 @@ export default function ShareMealPage() {
         <p>Or any other meal you feel needs sharing!</p>
       </header>
       <main className={classes.main}>
-        <form className={classes.form}>
+        <form className={classes.form} action={shareMeal}>
           <div className={classes.row}>
             <p>
               <label htmlFor="name">Your name</label>
@@ -39,7 +56,7 @@ export default function ShareMealPage() {
               required
             ></textarea>
           </p>
-          <ImagePicker  />
+          <ImagePicker label="Your Image" name="image"  />
           <p className={classes.actions}>
             <button type="submit">Share Meal</button>
           </p>
